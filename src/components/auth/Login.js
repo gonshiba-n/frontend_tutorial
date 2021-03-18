@@ -15,9 +15,12 @@ export default function Login(props) {
       },
       { withCredentials: true }
     ).then(response => {
+
+      // 変更
       if (response.data.logged_in) {
         props.handleSuccessfulAuthentication(response.data)
       }
+
     }).catch(error => {
       console.log("registration error", error)
     })

@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import axios from "axios";
 
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
@@ -13,6 +14,29 @@ export default function App() {
     setLoggedInStatus("ログインなう")
     setUser(data.user)
   }
+
+  // 追加
+  useEffect(() => {
+    checkLoginStatus()
+  })
+
+  // 追加
+  const checkLoginStatus = () => {
+    axios.get("http://localhost:3001/logged_in", { withCredentials: true })
+      .then(response => {
+        if(response.data.logged_in && loggedInStatus === "未ログイン"){
+          setLoggedInStatus("ログインなう")
+          setUser(response.data.user)
+        } else if (!response.data.logged_in && loggedInStatus === "ログインなう"){
+          setLoggedInStatus("未ログイン")
+          setUser({})
+        }
+      })
+      .catch(error => {
+        console.log("ログインエラー")
+      })
+  }
+
   return (
     <div>
       <BrowserRouter>
