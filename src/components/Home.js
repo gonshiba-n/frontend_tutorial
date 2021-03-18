@@ -2,12 +2,20 @@
 import React from 'react'
 import Registration from './auth/Registration'
 import Login from './auth/Login'
+import axios from 'axios'
 
 export default function Home(props){
 
   const handleSuccessfulAuthentication = (data) => {
     props.handleLogin(data)
     props.history.push("/dashboard")
+  }
+
+  const handleLogoutClick = () => {
+    axios.delete("http://localhost:3001/logout", {withCredentials: true})
+      .then(response => {
+        props.handleLogout()
+      }).catch(error => console.log("ログアウトエラー", error))
   }
 
   return(
@@ -17,6 +25,7 @@ export default function Home(props){
       <Registration handleSuccessfulAuthentication={handleSuccessfulAuthentication} />
 
       <Login handleSuccessfulAuthentication={handleSuccessfulAuthentication} />
+      <button onClick={handleLogoutClick}>ログアウト</button>
     </div>
   )
 }

@@ -15,6 +15,11 @@ export default function App() {
     setUser(data.user)
   }
 
+  const handleLogout = () => {
+    setLoggedInStatus("未ログイン")
+    setUser({})
+  }
+
   // 追加
   useEffect(() => {
     checkLoginStatus()
@@ -44,7 +49,12 @@ export default function App() {
           <Route
             exact path={"/"}
             render={props => (
-              <Home {...props} handleLogin={handleLogin} loggedInStatus={loggedInStatus} />
+              <Home
+                {...props}
+                handleLogin={handleLogin}
+                handleLogout={handleLogout}
+                loggedInStatus={loggedInStatus}
+              />
             )}
           />
           <Route
