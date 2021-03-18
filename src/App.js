@@ -1,20 +1,31 @@
-import React from "react";
-import { BrowserRouter, Switch, Route, Router } from 'react-router-dom'
+import React, {useState} from "react";
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 
-function App() {
+export default function App() {
+  // ログイン状態の確認(複数コンポーネントで使用する為、親要素に追加)
+  const [loggedInStatus, setLoggedInStatus] = useState("未ログイン")
+  const [user, setUser] = useState({})
   return (
     <div>
       <BrowserRouter>
         <Switch>
-          <Route exact path={"/"} component={Home} />
-          <Route exact path={"/dashboard"} component={Dashboard} />
+          <Route
+            exact path={"/"}
+            render={props => (
+              <Home {...props} loggedInStatus={loggedInStatus} />
+            )}
+          />
+          <Route
+            exact path={"/dashboard"}
+            render={props => (
+              <Dashboard {...props} loggedInStatus={loggedInStatus} />
+            )}
+          />
         </Switch>
       </BrowserRouter>
     </div>
   );
 }
-
-export default App;
